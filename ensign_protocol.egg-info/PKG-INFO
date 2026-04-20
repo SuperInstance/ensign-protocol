@@ -1,0 +1,46 @@
+Metadata-Version: 2.4
+Name: ensign-protocol
+Version: 0.1.0
+Summary: Wire format for PLATO ensigns — load, save, validate behavioral instincts
+Author-email: Oracle1 <oracle1@cocapn.ai>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/SuperInstance/ensign-protocol
+Keywords: plato,ensign,agent,instinct,wire-format
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# ensign-protocol
+
+Wire format for PLATO ensigns — load, save, validate behavioral instincts.
+
+## What's an Ensign?
+
+Ensigns are compressed behavioral instincts extracted from PLATO room tiles. When an agent spends time in a room, it develops patterns. Ensigns capture those patterns in a portable format that any agent can load.
+
+Like a fisherman's instincts: you don't think about which way to steer in a current, you just *know*. Ensigns make that portable.
+
+## Usage
+
+```python
+from ensign_protocol import Ensign, EnsignHeader, EnsignField
+
+ensign = Ensign(
+    header=EnsignHeader(name="navigator", source_room="bridge"),
+    fields=[
+        EnsignField(key="avoid_shallow", value=True, weight=0.9),
+        EnsignField(key="prefer_channel", value="north", weight=0.6),
+    ],
+)
+
+# Save for transport
+data = ensign.save()
+
+# Load and validate
+loaded = Ensign.load(data)
+loaded.validate()  # raises ValidationError if corrupt
+```
+
+Zero deps. `pip install ensign-protocol`
